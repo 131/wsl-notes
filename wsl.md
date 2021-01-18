@@ -97,9 +97,10 @@ set PATH=%PATH%;"C:\Program Files (x86)\Windows Resource Kits\Tools\"
 ntrights +r SeServiceLogonRight -u %USERNAME% -m \\%COMPUTERNAME%
 
 
-### autostart wsl ##########
-## XML FOR options
+# autostart wsl
 
+## See XML FOR options
+```
 sc delete wslauto
 
 sc create wslauto binPath= C:\apps\bin\ci-boot.exe type= own obj= "%computername%\%USERNAME%"
@@ -107,56 +108,35 @@ sc config wslauto start=auto
 sc failure wslauto actions= restart/1000/restart/1000/restart/1000// reset= 30
 
 sc.exe config wslauto obj= ".\%USERNAME%" password= "[password]"
+```
 
 
 
+## Configure git
 
-#################
-# SET TMP to mounted TMP
-sudo rm -rf /tmp
-sudo ln -s  $(wslpath $(wslar TEMP)) /tmp
-#############
-
-
-
+```
 git config --global user.name "François Leurent"
 git config --global user.email "131.js@leurent.email"
 
 
-
 git config --global push.default simple
 git config --global core.filemode false
+```
 
-#######################
-
-
-
-
-lsb_release -a
-
-
-sudo apt-get install  nsis ffmpeg
-
-IF NOT DEFINED WSLENV (SET WSLENV=:) && setx WSLENV %WSLENV%
-
-(SET WSLENV=%WSLENV%:A8DATADIR/p) && setx WSLENV %WSLENV%
-(SET WSLENV=%WSLENV%:GOPATH/p) && setx WSLENV %WSLENV%
-(SET WSLENV=%WSLENV%:MONOLITH_DIR/p) && setx WSLENV %WSLENV%
-
-
-
+# Configure agent
+## Windows style
+```
 REM Looking up pageant socket name
 
 dir /w \\.\pipe\\|find "pageant" > %temp%\SSH_AUTH_NAME
 set /P SSH_AUTH_NAME=<%temp%\SSH_AUTH_NAME
 (SET SSH_AUTH_SOCK=//./pipe/%SSH_AUTH_NAME%) && setx SSH_AUTH_SOCK %SSH_AUTH_SOCK%
+```
 
 
+## Unix style
 
-############ bashrc
-
-# ssh-agent configuration
-
+```
 export SSH_AUTH_SOCK=
 export SSH_PAGEANT_SOCK_NAME=$(cmd.exe /c "dir /w \\\\.\pipe\\\\" | grep pageant | sed -e 's/[[:blank:]]//g' -e 's/\r$//g')
 
@@ -171,12 +151,6 @@ else
   echo "No pageant running"
 fi
 
+```
 
 
-###############
-
-sudo ln -s /mnt/d/dvp/monolith/domyks/libraries /usr/share/php
-apt-get install php-cli php-xml php-mbstring php-pgsql
-
-
-echo "error_reporting = E_ALL &~ E_NOTICE;" | sudo tee /etc/php/7.2/cli/conf.d/99-mine.ini
