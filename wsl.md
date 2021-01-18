@@ -1,13 +1,11 @@
-##############################
-Install WSL
-
-
+# Install WSL
+```
 dism.exe /online /Enable-Feature /FeatureName:NetFx3 /All
 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+shutdown /r /t 0
+
 curl.exe -L -o ubuntu-1804.appx https://aka.ms/wsl-ubuntu-1804
-
 powershell -noprofile -command "Add-AppxPackage .\ubuntu-1804.appx"
-
 %localappdata%\Microsoft\WindowsApps\ubuntu1804.exe install
 
 
@@ -15,14 +13,16 @@ powershell -noprofile -command "Add-AppxPackage .\ubuntu-1804.appx"
 wsl --list --verbose
 #to remove
 wsl --unregister 
+```
 
 
-###############
-
-#iNstall openssh
+# Install openssh-server
+```
 netsh firewall add portopening TCP 22 "Open Port 22"
+```
 
 
+```
 sudo apt-get install openssh-server
 sudo dpkg-reconfigure openssh-server
 
@@ -37,7 +37,7 @@ exit
 
 mkdir ~/.ssh
 chmod 700 ~/.ssh
-curl https://crm.ivsweb.com/pubkeys/fleurent >> ~/.ssh/authorized_keys
+curl https://github.com/131.keys >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 
 echo "ivs ALL=NOPASSWD: /etc/init.d/wsl-init" | sudo tee /etc/sudoers.d/wsl-init
@@ -82,7 +82,7 @@ sudo chmod +x /etc/init.d/wsl-init
 
 sudo sed -i 's/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/m'  /etc/ssh/sshd_config
 sudo service ssh restart
-
+```
 
 
 
