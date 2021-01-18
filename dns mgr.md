@@ -1,0 +1,1 @@
+DISM.exe /online   /add-capability /CapabilityName:Rsat.Dns.Tools~~~~0.0.1.0
