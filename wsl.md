@@ -44,12 +44,10 @@ echo "ivs ALL=NOPASSWD: /etc/init.d/wsl-init" | sudo tee /etc/sudoers.d/wsl-init
 cat <<EOF | sudo tee /etc/init.d/wsl-init
 #!/bin/sh
 
-IFS=";"
-sentence=\$(wslvar PATH)
-
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-for word in \$sentence; do
+IFS=";"
+for word in \$(wslvar PATH); do
   PATH=\$PATH:\$(wslpath -u "\$word")
 done
 
@@ -88,6 +86,7 @@ sudo service ssh restart
 
 
 # Grand user right to log as service
+```
 ## download resource kit
 curl -o rktools.exe https://web.archive.org/web/20200803205217if_/https://download.microsoft.com/download/8/e/c/8ec3a7d8-05b4-440a-a71e-ca3ee25fe057/rktools.exe
 rktools.exe /c /t:c:\temp
@@ -95,9 +94,10 @@ msiexec /q /i c:\temp\rktools.msi
 
 set PATH=%PATH%;"C:\Program Files (x86)\Windows Resource Kits\Tools\"
 ntrights +r SeServiceLogonRight -u %USERNAME% -m \\%COMPUTERNAME%
+```
 
 
-# autostart wsl
+# autostart wsl using [dispatcher](https://github.com/131/dispatcher)
 
 ## See XML FOR options
 ```
