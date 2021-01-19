@@ -100,7 +100,7 @@ set PATH=%PATH%;"C:\Program Files (x86)\Windows Resource Kits\Tools\"
 ntrights +r SeServiceLogonRight -u %USERNAME% -m \\%COMPUTERNAME%
 ```
 
-## Configure service (see [ci-boot.XX](/131/wsl-notes/tree/master/boots)
+## Configure service (see [ci-boot.xml files](boots))
 ```
 sc delete wslauto
 
