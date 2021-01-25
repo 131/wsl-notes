@@ -48,3 +48,28 @@ sudo apt-get update
 sudo apt-get install docker-ce-cli 
 ```
 
+# Toggle docker style
+
+```
+# list current platform
+cmd.exe /c docker buildx ls
+
+"/mnt/c/Program Files/Docker/Docker/DockerCli.exe" -SwitchWindowsEngine
+"/mnt/c/Program Files/Docker/Docker/DockerCli.exe" -SwitchLinuxEngine
+```
+
+
+# Expose dockerd
+```
+# in daemon.json
+
+   "hosts" : ["tcp://0.0.0.0:2375"],
+
+netsh advfirewall firewall add rule name="Allow TCP 2375" dir=in action=allow protocol=TCP localport=2375
+
+
+# for docker desktop (windows)
+# forward external 2375 to internal 2375
+netsh interface portproxy add v4tov4 listenport=2375 listenaddress=[public IP] connectaddress=127.0.0.1 connectport=2375
+
+```
