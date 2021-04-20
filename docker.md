@@ -70,6 +70,24 @@ netsh advfirewall firewall add rule name="Allow TCP 2375" dir=in action=allow pr
 
 # for docker desktop (windows)
 # forward external 2375 to internal 2375
+netsh interface portproxy delete v4tov4 listenport=2375 listenaddress=[public IP]
+netsh interface portproxy show all
 netsh interface portproxy add v4tov4 listenport=2375 listenaddress=[public IP] connectaddress=127.0.0.1 connectport=2375
 
 ```
+
+
+# Disable UAC
+reg ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 0 /f
+
+# Restart IP Helper if docker start too slowly
+start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+
+timeout /t 60
+
+nircmd elevate cmd.exe /c "net stop iphlpsvc && net start iphlpsvc"
+
+C:\Windows\System32\bash.exe --rcfile /etc/init.d/wsl-init
+
+
+
